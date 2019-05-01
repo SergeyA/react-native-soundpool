@@ -1,15 +1,15 @@
 package com.malesevicmarko.rnsoundpool;
 
 /**
- * SoundItem will be passed to the SoundThread which
- * will handle the playing of sounds
+ * SoundItem will be passed to the SoundThread which will handle the playing of
+ * sounds
  *
  * @author soh#zolex
  *
  */
 public class SoundItem {
-    public soundID;
-    public volume;
+    public int soundID;
+    public float volume;
 
     /**
      * Default constructor
