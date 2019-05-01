@@ -20,6 +20,7 @@ public class RNSoundPoolModule extends ReactContextBaseJavaModule {
 
     private SoundPool sp;
     private ReactApplicationContext context;
+    private SoundThread soundThread;
     private HashMap<String, Integer> soundMap = new HashMap<>();
     private SparseArray<Promise> promises = new SparseArray<>();
     private ArrayList<Integer> soundsInPool = new ArrayList<>();
@@ -44,6 +45,8 @@ public class RNSoundPoolModule extends ReactContextBaseJavaModule {
         } else {
             sp = new SoundPool(maxStreams, AudioManager.STREAM_MUSIC, 0);
         }
+
+        soundThread = new SoundThread(sp);
 
         sp.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
             @Override
@@ -95,7 +98,11 @@ public class RNSoundPoolModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void play(String name, Promise promise){
-        if(soundsInPool.contains(soundMap.get(name))) promise.resolve(sp.play(soundMap.get(name), 1, 1, 1, 0, 1.0f));
+        if(soundsInPool.contains(soundMap.get(name))) {
+            SoundItem soundItem = new SoundItem(soundMap.get(name), 1.0f);
+            soundThread.sounds.offer(soundItem);
+            promise.resolve(null);
+        }
         else promise.reject("NOT_IN_POOL", "-1");
     }
 
