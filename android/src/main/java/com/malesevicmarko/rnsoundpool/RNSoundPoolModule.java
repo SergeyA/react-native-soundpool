@@ -47,6 +47,7 @@ public class RNSoundPoolModule extends ReactContextBaseJavaModule {
         }
 
         soundThread = new SoundThread(sp);
+        soundThread.start();
 
         sp.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
             @Override
@@ -69,6 +70,7 @@ public class RNSoundPoolModule extends ReactContextBaseJavaModule {
         soundMap.clear();
         soundsInPool.clear();
         sp.release();
+        soundThread.interrupt();
     }
 
     private static String getKeyFromValue(Map hm, int value) {
